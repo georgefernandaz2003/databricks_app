@@ -1,6 +1,9 @@
 [project]
 name = "mcp-sales-tools"
 version = "0.1.0"
+dependencies = [
+    "mcp",
+]
 
 [project.scripts]
 custom-server = "server.main:main"

@@ -13,5 +13,5 @@ def get_sales():
     ]
 
 def main():
-    # Run MCP server with HTTP transport required by Databricks
+    # Databricks requires HTTP transport
     mcp.run(transport="streamable-http")
