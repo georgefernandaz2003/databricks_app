@@ -13,5 +13,5 @@ def get_sales():
     ]
 
 if __name__ == "__main__":
-    # IMPORTANT: run MCP server
+    # IMPORTANT: keep server running
     mcp.run()
