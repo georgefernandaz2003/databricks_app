@@ -1,5 +1,9 @@
+import os
+import uvicorn
+from fastapi import FastAPI
 from mcp.server.fastmcp import FastMCP
 
+# Create MCP server
 mcp = FastMCP("mcp-sales-tools")
 
 @mcp.tool()
@@ -11,5 +15,16 @@ def get_sales():
         {"product": "Tablet", "sales": 80}
     ]
 
+# Create FastAPI app
+app = FastAPI()
+
+# Mount MCP SSE endpoint
+app.mount("/mcp", mcp.sse_app())
+
+@app.get("/")
+def health():
+    return {"status": "MCP server running"}
+
 if __name__ == "__main__":
-    mcp.run()
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
