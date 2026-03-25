@@ -1,4 +1,5 @@
 command:
   - uv
   - run
-  - custom-server
+  - python
+  - server/main.py
