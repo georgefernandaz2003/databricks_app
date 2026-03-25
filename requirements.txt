@@ -1,3 +1,4 @@
-mcp
+# mcp[cli]
 fastapi
 uvicorn
+mcp
