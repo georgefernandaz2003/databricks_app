@@ -1,4 +1,8 @@
+from fastapi import FastAPI
+import uvicorn
 from mcp.server.fastmcp import FastMCP
+
+app = FastAPI()
 
 mcp = FastMCP("sales-tools")
 
@@ -9,5 +13,9 @@ def get_sales():
         {"product": "Phone", "sales": 200}
     ]
 
+@app.get("/")
+def home():
+    return {"status": "MCP server running"}
+
 if __name__ == "__main__":
-    mcp.run(host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
