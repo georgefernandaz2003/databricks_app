@@ -1,6 +1,5 @@
 from mcp.server.fastmcp import FastMCP
 
-# Create MCP server
 mcp = FastMCP("mcp-sales-tools")
 
 @mcp.tool()
@@ -13,5 +12,4 @@ def get_sales():
     ]
 
 if __name__ == "__main__":
-    # Run MCP server via HTTP
-    mcp.run(transport="http", host="0.0.0.0", port=8000)
+    mcp.run()
