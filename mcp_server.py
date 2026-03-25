@@ -1,21 +1,17 @@
-from fastapi import FastAPI
-import uvicorn
 from mcp.server.fastmcp import FastMCP
 
-app = FastAPI()
-
-mcp = FastMCP("sales-tools")
+# Create MCP server
+mcp = FastMCP("mcp-sales-tools")
 
 @mcp.tool()
 def get_sales():
+    """Return sales data"""
     return [
         {"product": "Laptop", "sales": 120},
-        {"product": "Phone", "sales": 200}
+        {"product": "Phone", "sales": 200},
+        {"product": "Tablet", "sales": 80}
     ]
 
-@app.get("/")
-def home():
-    return {"status": "MCP server running"}
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # IMPORTANT: run MCP server
+    mcp.run()
