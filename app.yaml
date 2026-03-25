@@ -1,0 +1,6 @@
+command:
+  [
+    "uv",
+    "run",
+    "custom-server"
+  ]
