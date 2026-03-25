@@ -16,8 +16,8 @@ def get_sales() -> str:
     return json.dumps(data)
 
 def main():
-    # Databricks requires HTTP transport
-    mcp.run(transport="streamable-http")
+    # Databricks Apps uses port 8000 natively. 'sse' is required for Genie Code 
+    mcp.run(transport="sse", host="0.0.0.0", port=8000)
 
 if __name__ == "__main__":
     main()
