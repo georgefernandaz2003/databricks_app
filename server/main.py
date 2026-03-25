@@ -2,7 +2,7 @@ from mcp.server.fastmcp import FastMCP
 import json
 
 # Create MCP server
-mcp = FastMCP("mcp-sales-tools", host="0.0.0.0", port=8000)
+mcp = FastMCP("mcp-sales-tools")
 
 @mcp.tool()
 def get_sales() -> str:
@@ -15,8 +15,8 @@ def get_sales() -> str:
     return json.dumps(data)
 
 def main():
-    # Databricks Apps uses port 8000 natively. 'sse' is required for Genie Code 
-    mcp.run(transport="sse")
+    # Databricks Apps uses port 8000 natively 
+    mcp.run(transport="streamable-http")
 
 if __name__ == "__main__":
     main()
