@@ -119,6 +119,49 @@ def get_random_joke() -> str:
     except Exception as e:
         return json.dumps({"error": f"Failed to fetch joke: {str(e)}"})
 
+import traceback
+
+@mcp.tool()
+def search_policy_docs(search_query: str) -> str:
+    """Search the company vector database (c_policy) for related knowledge and documents."""
+    try:
+        # Import the vector search client (which we added to pyproject.toml)
+        from databricks.vector_search.client import VectorSearchClient
+        
+        # Initialize client (it natively uses Databricks App authentication)
+        vsc = VectorSearchClient(disable_login_prompt=True)
+        
+        # Connect to your specific Endpoint and Index from the screenshot!
+        index = vsc.get_index(
+            endpoint_name="testing", 
+            index_name="d_catalog.testing.c_policy"
+        )
+        
+        # Perform the semantic vector search
+        # NOTE: I am guessing the text column is named "content". 
+        # If your table uses a different column name (like "text" or "document_text"), change it here!
+        results = index.similarity_search(
+            query_text=search_query,
+            columns=["content"], 
+            num_results=3
+        )
+        
+        if "result" not in results or not results["result"].get("data_array"):
+            return json.dumps({"status": f"No matches found for '{search_query}'."})
+            
+        # Collect the top matches from Vector Search
+        found_data = []
+        for i, row in enumerate(results["result"]["data_array"]):
+            found_data.append(f"Result {i+1}: {row[0]}")
+            
+        return json.dumps({"vector_search_results": found_data})
+        
+    except Exception as e:
+        error_msg = str(e)
+        if "nonexistent column" in error_msg.lower() or "not found" in error_msg.lower():
+             return json.dumps({"error": f"Vector search failed. Ensure your table has a column named 'content'. Detailed error: {error_msg}"})
+        return json.dumps({"error": f"Vector Search failed: {error_msg}"})
+
 def main():
     # Databricks Apps uses port 8000 natively 
     mcp.run(transport="streamable-http")
