@@ -129,7 +129,8 @@ def search_policy_docs(search_query: str) -> str:
         from databricks.vector_search.client import VectorSearchClient
         
         # Initialize client with explicit authentication
-        workspace_url = os.environ.get("DATABRICKS_HOST", "https://dbc-3921ef7a-deff.cloud.databricks.com")
+        raw_url = os.environ.get("DATABRICKS_HOST", "https://dbc-3921ef7a-deff.cloud.databricks.com")
+        workspace_url = raw_url if raw_url.startswith("http") else f"https://{raw_url}"
         
         # We split the token into parts to bypass GitHub's automatic Secret Scanner block!
         p1 = "dapid"
