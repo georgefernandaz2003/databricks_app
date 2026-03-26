@@ -129,7 +129,7 @@ def search_policy_docs(search_query: str) -> str:
         from databricks.vector_search.client import VectorSearchClient
         
         # Initialize client (it natively uses Databricks App authentication)
-        vsc = VectorSearchClient(disable_login_prompt=True)
+        vsc = VectorSearchClient()
         
         # Connect to your specific Endpoint and Index from the screenshot!
         index = vsc.get_index(
