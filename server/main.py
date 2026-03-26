@@ -125,11 +125,17 @@ import traceback
 def search_policy_docs(search_query: str) -> str:
     """Search the company vector database (c_policy) for related knowledge and documents."""
     try:
-        # Import the vector search client (which we added to pyproject.toml)
+        import os
+        from dotenv import load_dotenv
         from databricks.vector_search.client import VectorSearchClient
         
-        # Initialize client (it natively uses Databricks App authentication)
-        vsc = VectorSearchClient()
+        load_dotenv() # Loads the explicit token from your local .env file
+        
+        # Initialize client with explicit authentication
+        workspace_url = os.environ.get("DATABRICKS_HOST", "https://dbc-3921ef7a-deff.cloud.databricks.com")
+        token = os.environ.get("DATABRICKS_TOKEN")
+        
+        vsc = VectorSearchClient(workspace_url=workspace_url, personal_access_token=token)
         
         # Connect to your specific Endpoint and Index from the screenshot!
         index = vsc.get_index(

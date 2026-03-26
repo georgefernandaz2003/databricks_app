@@ -3,7 +3,8 @@ name = "mcp-sales-tools"
 version = "0.1.0"
 dependencies = [
     "mcp",
-    "databricks-vectorsearch"
+    "databricks-vectorsearch",
+    "python-dotenv"
 ]
 
 [project.scripts]
