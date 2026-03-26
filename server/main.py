@@ -152,11 +152,10 @@ def search_policy_docs(search_query: str) -> str:
         )
         
         # Perform the semantic vector search
-        # NOTE: I am guessing the text column is named "content". 
-        # If your table uses a different column name (like "text" or "document_text"), change it here!
+        # Trying the column name "text" which is the standard default for Databricks PDF parsing pipelines.
         results = index.similarity_search(
             query_text=search_query,
-            columns=["content"], 
+            columns=["text"], 
             num_results=3
         )
         
@@ -172,8 +171,8 @@ def search_policy_docs(search_query: str) -> str:
         
     except Exception as e:
         error_msg = str(e)
-        if "nonexistent column" in error_msg.lower() or "not found" in error_msg.lower():
-             return json.dumps({"error": f"Vector search failed. Ensure your table has a column named 'content'. Detailed error: {error_msg}"})
+        if "nonexistent" in error_msg.lower() or "not present" in error_msg.lower() or "not found" in error_msg.lower():
+             return json.dumps({"error": f"Please verify the textual column name. Guessed 'text' but got: {error_msg}"})
         return json.dumps({"error": f"Vector Search failed: {error_msg}"})
 
 def main():
