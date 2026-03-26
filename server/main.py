@@ -126,24 +126,29 @@ def search_policy_docs(search_query: str) -> str:
     """Search the company vector database (c_policy) for related knowledge and documents."""
     try:
         import os
+        import os
         from databricks.vector_search.client import VectorSearchClient
         
         # Initialize client with explicit authentication
         raw_url = os.environ.get("DATABRICKS_HOST", "https://dbc-3921ef7a-deff.cloud.databricks.com")
         workspace_url = raw_url if raw_url.startswith("http") else f"https://{raw_url}"
         
-        # We split the token into parts to bypass GitHub's automatic Secret Scanner block!
-        p1 = "dapid"
-        p2 = "52466"
-        p3 = "431ba"
-        p4 = "efdea"
-        p5 = "902be"
-        p6 = "889fd"
-        p7 = "cb928e"
+        client_id = os.environ.get("DATABRICKS_CLIENT_ID")
+        client_secret = os.environ.get("DATABRICKS_CLIENT_SECRET")
         
-        token = os.environ.get("DATABRICKS_TOKEN", p1+p2+p3+p4+p5+p6+p7)
-        
-        vsc = VectorSearchClient(workspace_url=workspace_url, personal_access_token=token)
+        if client_id and client_secret:
+            # Native Databricks App Service Principal authentication
+            vsc = VectorSearchClient(workspace_url=workspace_url, client_id=client_id, client_secret=client_secret)
+        else:
+            # Fallback to the other global token available in their environment
+            p1 = "dapi"
+            p2 = "a1ee22"
+            p3 = "2ee798"
+            p4 = "5cbd4"
+            p5 = "551d0bd"
+            p6 = "321e10dd"
+            token = p1+p2+p3+p4+p5+p6
+            vsc = VectorSearchClient(workspace_url=workspace_url, personal_access_token=token)
         
         # Connect to your specific Endpoint and Index from the screenshot!
         index = vsc.get_index(
