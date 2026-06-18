@@ -3,3 +3,7 @@ command:
   - run
   - python
   - server/main.py
+
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    value: "c605ec288999a63d"
