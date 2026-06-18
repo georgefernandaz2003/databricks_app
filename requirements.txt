@@ -1,2 +1,5 @@
 uv
 mcp
+databricks-vectorsearch
+python-dotenv
+databricks-sdk
