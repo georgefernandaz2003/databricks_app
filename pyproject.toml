@@ -4,7 +4,8 @@ version = "0.1.0"
 dependencies = [
     "mcp",
     "databricks-vectorsearch",
-    "python-dotenv"
+    "python-dotenv",
+    "databricks-sdk"
 ]
 
 [project.scripts]
